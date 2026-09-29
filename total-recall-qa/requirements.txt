@@ -1,0 +1,8 @@
+wikipedia-api
+sparqlwrapper
+openai
+matplotlib
+tqdm
+mwparserfromhell
+mwxml
+

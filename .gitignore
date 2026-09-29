@@ -1,0 +1,7 @@
+
+# Local environments and downloaded data
+.venv/
+.venv312/
+data/
+__pycache__/
+*.log
