@@ -1,0 +1,16 @@
+{
+  "n": 169,
+  "retriever": "spladepp",
+  "retrieval_eval_ks": [
+    3,
+    10,
+    100,
+    1000
+  ],
+  "retrieval_eval_max_k": 1000,
+  "entity_recall@3": 0.07923603960465919,
+  "entity_recall@10": 0.186387348048313,
+  "entity_recall@100": 0.4380166104794226,
+  "entity_recall@1000": 0.738272682463487,
+  "entity_recall": 0.738272682463487
+}
