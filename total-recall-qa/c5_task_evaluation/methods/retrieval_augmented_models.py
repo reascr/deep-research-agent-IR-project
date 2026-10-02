@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup
 
 from utils.general_utils import passages2string
 from c5_task_evaluation.src.llm_generator import LLMGenerator_api, LLMGenerator_hf_local, StopOnSequence
-from c5_task_evaluation.src.retrieval_models_local import BM25Retriever, RerankRetriever, DenseRetriever, OracleRetriever, PrecomputedRetriever
+from c5_task_evaluation.src.retrieval_models_local import BM25Retriever, RerankRetriever, DenseRetriever, OracleRetriever, PrecomputedRetriever,    SPLADERetriever
 from c5_task_evaluation.prompts.prompt_templetes import (
     SYSTEM_PROMPT_NO_RETRIEVAL,
     SYSTEM_PROMPT_SINGLE_RETRIEVAL,
@@ -31,7 +31,7 @@ class BasicRAG:
         if args.model_source == 'api':
             self.generator = LLMGenerator_api(args.model_name_or_path)
         elif args.model_source == 'hf_local':
-            backbone_model = transformers.AutoModelForCausalLM.from_pretrained(args.model_name_or_path, dtype=torch.bfloat16).to(device) # attn_implementation="eager"
+            backbone_model = transformers.AutoModelForCausalLM.from_pretrained(args.model_name_or_path, dtype=torch.bfloat16, device_map="auto") # attn_implementation="eager"
             backbone_tokenizer = transformers.AutoTokenizer.from_pretrained(args.model_name_or_path)
             self.generator = LLMGenerator_hf_local(backbone_model, backbone_tokenizer, device, args)
         else:
@@ -48,6 +48,8 @@ class BasicRAG:
                 self.retriever = RerankRetriever(args)
             elif args.retriever_name in ['contriever', 'dpr', 'e5', 'bge']:
                 self.retriever = DenseRetriever(args)
+            elif args.retriever_name == 'spladepp':
+                self.retriever = SPLADERetriever(args)
             elif args.retriever_name == 'oracle':
                 qrels = getattr(args, 'qrels', None)
                 if not qrels:
